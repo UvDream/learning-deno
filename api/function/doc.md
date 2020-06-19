@@ -18,9 +18,13 @@ Deno.chdir("../userB");
 Deno.chdir("C:\\Program Files (x86)\\Java");
 ```
 
-Throws if directory not found. Throws if the user does not have access rightsDeno.errors.NotFoundDeno.errors.PermissionDenied
+如果找不到目录，则抛出该异常。 如果用户没有访问权限，则抛出该异常。`Deno.errors.NotFoundDeno.errors.PermissionDenied`
 
-Requires --allow-read.
+## 权限
+
+```
+--allow-read.
+```
 
 # chmod
 
@@ -32,7 +36,7 @@ function Deno.chmod(path: string | URL, mode: number): Promise<void>
 
 ## 功能描述
 
-Changes the permission of a specific file/directory of specified path. Ignores the process's umask.
+更改指定路径的特定文件/目录的权限. Ignores the process's umask.
 
 ## 示例
 
@@ -40,20 +44,26 @@ Changes the permission of a specific file/directory of specified path. Ignores t
 await Deno.chmod("/path/to/file", 0o666);
 ```
 
-The mode is a sequence of 3 octal numbers. The first/left-most number specifies the permissions for the owner. The second number specifies the permissions for the group. The last/right-most number specifies the permissions for others. For example, with a mode of 0o764, the owner (7) can read/write/execute, the group (6) can read/write and everyone else (4) can read only.
+该模式是 3 个八进制数字的序列。 第一个/最左边的数字指定所有者的权限。 第二个数字指定该组的权限。 最后/最右边的数字指定其他用户的权限。 例如，在 0o764 模式下，所有者（7）可以读/写/执行，组（6）可以读/写，其他所有人（4）只能读。
 
-Number Description
-7 read, write, and execute
-6 read and write
-5 read and execute
-4 read only
-3 write and execute
-2 write only
-1 execute only
-0 no permission
+| 参数 | 描述         |
+| ---- | ------------ |
+| 7    | 读, 写, 执行 |
+| 6    | 读 , 写      |
+| 5    | 读 , 执行    |
+| 4    | 只读         |
+| 3    | 写 , 执行    |
+| 2    | 只写         |
+| 1    | 只执行       |
+| 0    | 无权限       |
+
 NOTE: This API currently throws on Windows
 
-Requires permission.allow-write
+## 权限
+
+```
+--allow-write
+```
 
 # chmodSync
 
@@ -61,14 +71,23 @@ Requires permission.allow-write
 function Deno.chmodSync(path: string | URL, mode: number): void
 ```
 
-Synchronously changes the permission of a specific file/directory of specified path. Ignores the process's umask.
+同步更改指定路径的特定文件/目录的权限. Ignores the process's umask.
 
+## 示例
+
+```
 Deno.chmodSync("/path/to/file", 0o666);
-For a full description, see chmod
+```
+
+有关完整说明，请参见 chmod
 
 NOTE: This API currently throws on Windows
 
-Requires permission.allow-write
+## 权限
+
+```
+--allow-write
+```
 
 # chown
 
