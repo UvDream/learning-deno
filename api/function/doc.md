@@ -28,7 +28,7 @@ Deno.chdir("C:\\Program Files (x86)\\Java");
 
 # chmod
 
-## 参数说明
+## 参数
 
 ```
 function Deno.chmod(path: string | URL, mode: number): Promise<void>
@@ -67,9 +67,13 @@ NOTE: This API currently throws on Windows
 
 # chmodSync
 
+## 参数
+
 ```
 function Deno.chmodSync(path: string | URL, mode: number): void
 ```
+
+## 功能描述
 
 同步更改指定路径的特定文件/目录的权限. Ignores the process's umask.
 
@@ -91,16 +95,29 @@ NOTE: This API currently throws on Windows
 
 # chown
 
+## 参数
+
 ```
 function Deno.chown(path: string | URL, uid: number, gid: number): Promise<void>
 ```
 
-Change owner of a regular file or directory. This functionality is not available on Windows.
+## 功能描述
 
+更改常规文件或目录的所有者. 该功能在 Windows 上不可用.
+
+## 示例代码
+
+```
 await Deno.chown("myFile.txt", 1000, 1002);
-Requires permission.allow-write
+```
 
-Throws Error (not implemented) if executed on Windows
+## 权限
+
+```
+--allow-write
+```
+
+如果在 Windows 上执行，则会引发错误（未实现)
 
 param path path to the file
 
@@ -110,16 +127,31 @@ param gid group id (GID) of the new owner
 
 # chownSync
 
+## 参数
+
 ```
 function Deno.chownSync(path: string | URL, uid: number, gid: number): void
 ```
 
-Synchronously change owner of a regular file or directory. This functionality is not available on Windows.
+## 功能描述
 
+同步更改常规文件或目录的所有者. 该功能在Windows上不可用.
+
+## 示例代码
+
+```
 Deno.chownSync("myFile.txt", 1000, 1002);
-Requires permission.allow-write
+```
 
-Throws Error (not implemented) if executed on Windows
+## 权限
+
+```
+--allow-write
+```
+
+
+
+如果在Windows上执行，则会引发错误（未实现）
 
 param path path to the file
 
@@ -129,56 +161,104 @@ param gid group id (GID) of the new owner
 
 # close
 
-```
+## 参数
+
+```typescriptfcccccccvvvvvvvvvvv\
 function Deno.close(rid: number): void
 ```
 
-Close the given resource ID (rid) which has been previously opened, such as via opening or creating a file. Closing a file when you are finished with it is important to avoid leaking resources.
+## 功能描述
 
+关闭先前已打开的给定资源，例如通过打开或创建文件。 完成文件关闭后，避免资源泄漏很重要。
+
+```typescript
 const file = await Deno.open("my_file.txt");
 // do work with "file" object
 Deno.close(file.rid);
+```
+
+
 
 # connect
+
+## 参数
 
 ```
 function Deno.connect(options: ConnectOptions): Promise<Conn>
 ```
 
-Connects to the hostname (default is "127.0.0.1") and port on the named transport (default is "tcp"), and resolves to the connection ().Conn
+## 功能描述
 
+连接到主机名（默认为“ 127.0.0.1”）和命名传输上的端口（默认为“ tcp”），并解析为连接（`Conn`）
+
+## 示例代码
+
+```typescript
 const conn1 = await Deno.connect({ port: 80 });
 const conn2 = await Deno.connect({ hostname: "192.0.2.1", port: 80 });
 const conn3 = await Deno.connect({ hostname: "[2001:db8::1]", port: 80 });
 const conn4 = await Deno.connect({ hostname: "golang.org", port: 80, transport: "tcp" });
-Requires permission for "tcp".allow-net
+```
+
+## 权限
+
+```
+--allow-net
+```
+
+
 
 # connectTls
+
+## 参数
 
 ```
 function Deno.connectTls(options: ConnectTlsOptions): Promise<Conn>
 ```
 
-Establishes a secure connection over TLS (transport layer security) using an optional cert file, hostname (default is "127.0.0.1") and port. The cert file is optional and if not included Mozilla's root certificates will be used (see also https://github.com/ctz/webpki-roots for specifics)
+## 功能描述
 
+使用可选的证书文件，主机名（默认为“ 127.0.0.1”）和端口在TLS（传输层安全性）上建立安全连接。 cert文件是可选的，如果未包含，则将使用Mozilla的根证书（有关详细信息，另请参见https://github.com/ctz/webpki-roots）
+
+## 代码示例
+
+```	
 const conn1 = await Deno.connectTls({ port: 80 });
 const conn2 = await Deno.connectTls({ certFile: "./certs/my_custom_root_CA.pem", hostname: "192.0.2.1", port: 80 });
 const conn3 = await Deno.connectTls({ hostname: "[2001:db8::1]", port: 80 });
 const conn4 = await Deno.connectTls({ certFile: "./certs/my_custom_root_CA.pem", hostname: "golang.org", port: 80});
-Requires permission.allow-net
+```
+
+## 权限
+
+```
+--allow-net
+```
+
+
 
 # copy
+
+## 参数
 
 ```
 function Deno.copy(src: Reader, dst: Writer, options?: { bufSize: number }): Promise<number>
 ```
 
-Copies from to until either EOF () is read from or an error occurs. It resolves to the number of bytes copied or rejects with the first error encountered while copying.srcdstnullsrc
+## 功能描述
 
+从src复制到dst，直到从src读取EOF（null）或发生错误。 它解析为已复制的字节数，或者在复制时遇到第一个错误时被拒绝
+
+## 代码示例
+
+```
 const source = await Deno.open("my_file.txt");
 const buffer = new Deno.Buffer()
 const bytesCopied1 = await Deno.copy(source, Deno.stdout);
 const bytesCopied2 = await Deno.copy(source, buffer);
+```
+
+
 param src The source to copy from
 
 param dst The destination to copy to
@@ -187,25 +267,55 @@ param options Can be used to tune size of the buffer. Default size is 32kB
 
 # copyFile
 
+## 参数
+
 ```
 function Deno.copyFile(fromPath: string | URL, toPath: string | URL): Promise<void>
 ```
 
-Copies the contents and permissions of one file to another specified path, by default creating a new file if needed, else overwriting. Fails if target path is a directory or is unwritable.
+## 功能描述
 
+将一个文件的内容和权限复制到另一个指定的路径，默认情况下根据需要创建一个新文件，否则覆盖。 如果目标路径是目录或不可写，则失败。
+
+## 示例代码
+
+```
 await Deno.copyFile("from.txt", "to.txt");
-Requires permission on fromPath. Requires permission on toPath.allow-readallow-write
+```
+
+## 权限
+
+```
+--allow-read  --allow-write
+```
+
+
 
 # copyFileSync
+
+## 参数
 
 ```
 function Deno.copyFileSync(fromPath: string | URL, toPath: string | URL): void
 ```
 
-Synchronously copies the contents and permissions of one file to another specified path, by default creating a new file if needed, else overwriting. Fails if target path is a directory or is unwritable.
+## 功能描述
 
+将一个文件的内容和权限同步复制到另一个指定的路径，默认情况下根据需要创建一个新文件，否则覆盖。 如果目标路径是目录或不可写，则失败。
+
+## 示例代码
+
+```
 Deno.copyFileSync("from.txt", "to.txt");
-Requires permission on fromPath. Requires permission on toPath.allow-readallow-write
+```
+
+## 权限
+
+```
+--allow-read  --allow-write
+```
+
+
 
 # create
 
