@@ -171,6 +171,8 @@ function Deno.close(rid: number): void
 
 关闭先前已打开的给定资源，例如通过打开或创建文件。 完成文件关闭后，避免资源泄漏很重要。
 
+## 示例代码
+
 ```typescript
 const file = await Deno.open("my_file.txt");
 // do work with "file" object
@@ -319,14 +321,27 @@ Deno.copyFileSync("from.txt", "to.txt");
 
 # create
 
+## 参数
+
 ```
 function Deno.create(path: string | URL): Promise<File>
 ```
 
-Creates a file if none exists or truncates an existing file and resolves to an instance of .Deno.File
+## 功能描述
 
+如果不存在则创建一个文件，或者将其截断并解析为Deno.File的实例
+
+## 示例代码
+
+```
 const file = await Deno.create("/foo/bar.txt");
-Requires and permissions.allow-readallow-write
+```
+
+## 权限
+
+```
+--allow-read  --allow-write
+```
 
 # createSync
 
